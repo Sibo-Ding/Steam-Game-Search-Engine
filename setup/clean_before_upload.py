@@ -11,7 +11,9 @@ os.chdir("../data")
 
 # Read csv + Drop NA Title + Clean price + Clean date + Select columns + Write csv
 df = pd.read_csv("steam_data.csv")
-df.dropna(subset=["Title"]).assign(
+df.dropna(
+    subset=["Title"]
+).assign(
     original_price=df["Original Price"]
     .replace("Free", "0")  # Replace "Free" with "0"
     .str.replace(r"[$,]", "", regex=True)  # Remove "$" and ","
@@ -31,6 +33,4 @@ df.dropna(subset=["Title"]).assign(
         "Popular Tags",
         "Game Features",
     ]
-].to_csv(
-    "steam_clean_no_header.csv", header=False, index=False
-)
+].to_csv("steam_clean_no_header.csv", header=False, index=False)
