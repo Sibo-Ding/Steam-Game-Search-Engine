@@ -9,12 +9,21 @@ os.chdir(current_directory)
 # Change working directory to "data"
 os.chdir("../data")
 
-# Read csv + Select columns + Write csv
-pd.read_csv("steam_data.csv")[
+# Read csv + Clean price + Clean date + Select columns + Write csv
+df = pd.read_csv("steam_data.csv")
+df.assign(
+    original_price=df["Original Price"]
+    .replace("Free", "0")  # Replace "Free" with "0"
+    .str.replace(r"[$,]", "", regex=True)  # Remove "$" and ","
+    .astype(float)  # Convert to float
+).assign(
+    # If a date is not in "Jan 1, 2000" format, set it to NaT/NaN
+    release_date=pd.to_datetime(df["Release Date"], format="%d %b, %Y", errors="coerce")
+)[
     [
         "Title",
-        "Original Price",
-        "Release Date",
+        "original_price",
+        "release_date",
         "Game Description",
         "All Reviews Summary",
         "Developer",
