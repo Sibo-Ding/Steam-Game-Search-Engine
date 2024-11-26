@@ -1,11 +1,12 @@
-# Save steam_data.csv under "data" folder.
+#==========Load environment==========
+# Save steam_data.csv under "data" folder
 
 import os
 # Change working directory to the current .py file
 current_directory = os.path.dirname(os.path.abspath(__file__))
 os.chdir(current_directory)
 
-#==========Load environment==========
+#====================
 from tqdm import tqdm
 import pandas as pd
 from sentence_transformers import SentenceTransformer
