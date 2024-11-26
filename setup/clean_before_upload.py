@@ -29,9 +29,9 @@ df = (
             df_["Release Date"], format="%d %b, %Y", errors="coerce"
         ),
         search_text=lambda df_: df_["Title"]
-            + " " + df_["Game Description"]
-            + " " + df_["Popular Tags"]
-            + " " + df_["Game Features"],
+            + " " + df_["Game Description"].fillna("")
+            + " " + df_["Popular Tags"].fillna("")
+            + " " + df_["Game Features"].fillna(""),
     )
 )
 
