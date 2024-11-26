@@ -8,17 +8,18 @@ from sentence_transformers import SentenceTransformer
 # Change working directory to the current .py file
 current_directory = os.path.dirname(os.path.abspath(__file__))
 os.chdir(current_directory)
-# Change working directory to "data"
-os.chdir("../data")
 
 tqdm.pandas()  # Progress bar
+
+IN_PATH = "../data/steam_data.csv"
+OUT_PATH = "../data/steam_clean_no_header.csv"
 
 # Read csv + Drop NA Title
 # Clean price: Replace "Free" with "0" + Remove "$" and "," + Convert to float
 # Clean date: coerce: If a date is not in "Jan 1, 2000" format, set it to NaT/NaN
 # Combine Title, Description, Tags, and Features to one column "search_text"
 df = (
-    pd.read_csv("steam_data.csv")
+    pd.read_csv(IN_PATH)
     .dropna(subset=["Title"])
     .assign(
         original_price=lambda df_: df_["Original Price"]
@@ -61,4 +62,4 @@ df[
         "Game Features",
         "embedding",
     ]
-].to_csv("steam_clean_no_header.csv", header=False, index=False)
+].to_csv(OUT_PATH, header=False, index=False)
