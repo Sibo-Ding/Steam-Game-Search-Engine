@@ -1,4 +1,4 @@
-# Save steam_data.csv under "data" folder, because it is too big to upload to GitHub.
+# Save steam_data.csv under "data" folder.
 
 import os
 from tqdm import tqdm
