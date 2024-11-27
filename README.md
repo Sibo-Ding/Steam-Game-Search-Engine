@@ -12,7 +12,7 @@
 4. Clean data and use sentence transformer to create a column with vectors/embeddings by running [clean_embedding_local.py](setup/clean_embedding_local.py), output `data/steam_clean_no_header.csv`.
     - To load `sentence_transformers` package locally, it requires `numpy` version < 2, `keras` version < 3.
     - Alternatively, run [clean_embedding_GCP_Vertex.ipynb](setup/clean_embedding_GCP_Vertex.ipynb) on GCP Vertex AI for about 1.5 hours; run [clean_embedding_Google_Drive.ipynb](setup/clean_embedding_Google_Drive.ipynb) on Google Drive for about 3.5 hours. Detailed instructions about loading data are in those files.
-5. Upload `steam_clean_no_header.csv` into GCP bucket. Load into the appropriate tables with the "Import" option in GCP SQL instance's console.
+5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `steam` table with the "Import" option in GCP SQL instance's console.
 6. Create vector indexes by running [create_vector_indexes.py](setup/create_vector_indexes.py).
 
 Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py). However, this is not recommended because it is not efficient and hard to debug.  
