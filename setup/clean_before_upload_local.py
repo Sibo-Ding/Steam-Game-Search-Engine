@@ -22,6 +22,7 @@ def clean_embedding(IN_PATH):
     # Clean price: Replace "Free" with "0" + Remove "$" and "," + Convert to float
     # Clean date: coerce: If a date is not in "Jan 1, 2000" format, set it to NaT/NaN
     # Combine Title, Description, Tags, and Features to one column "search_text"
+    # Remane + Select columns
     df = (
         pd.read_csv(IN_PATH)
         .dropna(subset=["Title"])
@@ -38,7 +39,31 @@ def clean_embedding(IN_PATH):
                 + " " + df_["Popular Tags"].fillna("")
                 + " " + df_["Game Features"].fillna(""),
         )
-    )
+        .rename(
+            columns={
+                "Title": "name",
+                "Game Description": "description",
+                "All Reviews Summary": "all_reviews_summary",
+                "Developer": "developer",
+                "Supported Languages": "supported_languages",
+                "Popular Tags": "tags",
+                "Game Features": "features",
+            }
+        )
+    )[
+        [
+            "name",
+            "original_price",
+            "release_date",
+            "description",
+            "all_reviews_summary",
+            "developer",
+            "supported_languages",
+            "tags",
+            "features",
+            "search_text",
+        ]
+    ]
 
 #==========Sentence transformer==========
     # Initialize Sentence Transformer model
@@ -53,21 +78,9 @@ def clean_embedding(IN_PATH):
         lambda text: model.encode(text).tolist()
     )
     
-    # Select columns
-    return df[
-        [
-            "Title",
-            "original_price",
-            "release_date",
-            "Game Description",
-            "All Reviews Summary",
-            "Developer",
-            "Supported Languages",
-            "Popular Tags",
-            "Game Features",
-            "embedding",
-        ]
-    ]
+    df = df.drop(columns=["search_text"])
+
+    return df
 
 
 if __name__ == "__main__":
