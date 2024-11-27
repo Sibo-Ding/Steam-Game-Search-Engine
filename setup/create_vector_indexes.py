@@ -22,4 +22,9 @@ if __name__ == "__main__":
     ef_construction = 100  # @param {type:"integer"}
     operator = "vector_cosine_ops"  # @param ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"]
 
+    # Quick input validations.
+    assert type(m) == int, "⚠️ Please input a valid value for m."
+    assert type(ef_construction) == int, "⚠️ Please input a valid value for ef_construction."
+    assert operator in ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"], "⚠️ Please input a valid value for operator."
+    
     create_vector_indexes(m, ef_construction, operator)

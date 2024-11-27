@@ -16,11 +16,16 @@ if __name__ == "__main__":
     OUT_TABLE = "steam"
 
     df = clean_embedding(IN_PATH)
-    df.to_sql(OUT_TABLE, engine, if_exists="append", index=False)
+    df.to_sql(OUT_TABLE, engine, if_exists="replace", index=False)
 
     # @markdown Create an HNSW index on the `steam` table:
     m = 16  # @param {type:"integer"}
     ef_construction = 100  # @param {type:"integer"}
     operator = "vector_cosine_ops"  # @param ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"]
 
+    # Quick input validations.
+    assert type(m) == int, "⚠️ Please input a valid value for m."
+    assert type(ef_construction) == int, "⚠️ Please input a valid value for ef_construction."
+    assert operator in ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"], "⚠️ Please input a valid value for operator."
+    
     create_vector_indexes(m, ef_construction, operator)
