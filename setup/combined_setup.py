@@ -1,5 +1,5 @@
 from create_table import create_table
-from clean_before_upload_local import clean_embedding
+from clean_embedding_local import clean_embedding
 from create_vector_indexes import create_vector_indexes
 from database import engine
 

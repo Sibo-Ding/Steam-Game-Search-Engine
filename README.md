@@ -2,9 +2,9 @@
 
 ## Setup
 1. Download data from [Kaggle](https://www.kaggle.com/datasets/nikatomashvili/steam-games-dataset), save as `data/steam_data.csv`.
-2. Clean data and use sentence transformer to create a column with vectors/embeddings by running `setup/clean_before_upload.py`, output `data/steam_clean_no_header.csv`.
-    - Alternatively, run `setup/clean_before_upload_GCP_Vertex.ipynb` on GCP Vertex AI for about 1.5 hours; run `setup/clean_before_upload_Google_Drive.ipynb` on Google Drive for about 3.5 hours. Detailed instructions about loading data are in those files.
-3. Create a SQL table by running `setup/create_table.py`.
+2. Create a SQL table by running `setup/create_table.py`.
+3. Clean data and use sentence transformer to create a column with vectors/embeddings by running `setup/clean_embedding_local.py`, output `data/steam_clean_no_header.csv`.
+    - Alternatively, run `setup/clean_embedding_GCP_Vertex.ipynb` on GCP Vertex AI for about 1.5 hours; run `setup/clean_embedding_Google_Drive.ipynb` on Google Drive for about 3.5 hours. Detailed instructions about loading data are in those files.
 4. Upload `steam_clean_no_header.csv` into GCP bucket, import into GCP SQL.
 5. Create vector indexes by running `setup/create_vector_indexes.py`.
 
