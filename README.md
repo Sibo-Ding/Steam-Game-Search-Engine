@@ -17,6 +17,13 @@
 
 Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py). However, this is not recommended because it is not efficient and hard to debug.  
 
+## Vector search
+In [vector_search.py](code/vector_search.py), modify search criteria and run.  
+You can add more search criteria to this code:
+- Add filter criteria `AND column_you_choose = $6` after the `results` query; add parameters to `results`.
+- Add parameters to the `main()` function (both define and call).
+- Assign values to parameters in the main program.
+
 ## Notes
 1. When cleaning "Release Date", if a date is not in "Jan 1, 2000" format, set it to NaT/NaN. This includes "Apr 2019", "Apr-2019", "Coming soon", etc.
 2. Game name has non-English (e.g. French), non-alphabetical (e.g. Chinese), and non-character (e.g. emoji) words.

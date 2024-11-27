@@ -6,3 +6,6 @@ pandas
 tqdm
 tf-keras
 sentence-transformers
+pgvector
+asyncio
+asyncpg
