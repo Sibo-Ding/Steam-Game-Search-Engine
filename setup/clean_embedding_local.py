@@ -2,6 +2,7 @@
 # Save steam_data.csv under "data" folder
 
 import os
+
 # Change working directory to the current .py file
 current_directory = os.path.dirname(os.path.abspath(__file__))
 os.chdir(current_directory)
