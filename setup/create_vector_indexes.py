@@ -5,16 +5,21 @@
 
 from database import engine
 
-# Create vector indexes for faster similarity search
-# @markdown Create an HNSW index on the `steam` table:
-m = 16  # @param {type:"integer"}
-ef_construction = 100  # @param {type:"integer"}
-operator = "vector_cosine_ops"  # @param ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"]
+def create_vector_indexes(m, ef_construction, operator):
+    """Create vector indexes for faster similarity search"""
+    with engine.begin() as conn:
+        conn.exec_driver_sql(
+            f"""CREATE INDEX ON steam
+                USING hnsw(embedding {operator})
+                WITH (m = {m}, ef_construction = {ef_construction})
+                """
+        )
 
-with engine.begin() as conn:
-    conn.exec_driver_sql(
-        f"""CREATE INDEX ON steam
-            USING hnsw(embeddings {operator})
-            WITH (m = {m}, ef_construction = {ef_construction})
-            """
-    )
+
+if __name__ == "__main__":
+    # @markdown Create an HNSW index on the `steam` table:
+    m = 16  # @param {type:"integer"}
+    ef_construction = 100  # @param {type:"integer"}
+    operator = "vector_cosine_ops"  # @param ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"]
+
+    create_vector_indexes(m, ef_construction, operator)
