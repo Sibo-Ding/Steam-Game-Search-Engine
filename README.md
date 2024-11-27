@@ -7,6 +7,7 @@
 3. Create a table by running `setup/create_table.py`.
 4. Upload `steam_clean_no_header.csv` into GCP bucket, import into GCP SQL.
 5. Create vector indexes by running `setup/create_vector_indexes.py`.
+
 Steps 2 to 5 can be combined by running `setup/combined_setup.py`. However, this is not recommended because it is not efficient and hard to debug.  
 
 ## Notes
