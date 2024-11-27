@@ -1,0 +1,7 @@
+SQLAlchemy
+python-dotenv
+psycopg2-binary
+pandas
+tqdm
+sentence-transformers
+numpy==1.26.4
