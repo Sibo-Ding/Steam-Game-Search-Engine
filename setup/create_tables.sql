@@ -1,3 +1,4 @@
+-- Activate vector data type
 CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE steam (
