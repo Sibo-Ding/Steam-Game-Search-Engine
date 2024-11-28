@@ -75,7 +75,7 @@ if __name__ == "__main__":
     max_price = 100  # @param {type:"integer"}
 
     # Quick input validations.
-    assert type(toy) == str, "⚠️ Please input a valid input search text"
+    assert type(search_input) == str, "⚠️ Please input a valid input search text"
 
     embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
     qe = embeddings_service.encode(search_input).tolist()  # qe = Query Embedding
