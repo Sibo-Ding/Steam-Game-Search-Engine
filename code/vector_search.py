@@ -12,14 +12,19 @@ from database_config import ASYNCPG_DATABASE_CONFIG
 import pandas as pd
 
 
-async def main(qe, similarity_threshold, num_matches, min_price, max_price):
+async def vector_search(qe, similarity_threshold, num_matches, min_price, max_price):
+    """
+    Finding similar games to users' query using `pgvector` cosine similarity search
+    over all vector embeddings.
+    """
+    
     # Connect to the database
     conn = await asyncpg.connect(**ASYNCPG_DATABASE_CONFIG)
 
     # Map the PostgreSQL vector type to a specific Python type (e.g. list)
     await register_vector(conn)
 
-    # $1, $2 etc. are placeholders in `asyncpg`` package,
+    # $1, $2 etc. are placeholders in `asyncpg` package,
     #   corresponding to parameters after the query. E.g. $1 = qe
     # 1 - (embedding <=> $1):
     #   Calculates cosine similarity between the query embedding ($1)
@@ -80,7 +85,7 @@ if __name__ == "__main__":
 
     matches = []  # A list storing search results
 
-    asyncio.run(main(qe, similarity_threshold, num_matches, min_price, max_price))
+    asyncio.run(vector_search(qe, similarity_threshold, num_matches, min_price, max_price))
 
     # Show the results for similar products that matched the user query.
     matches = pd.DataFrame(matches)

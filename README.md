@@ -21,7 +21,7 @@ Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/
 In [vector_search.py](code/vector_search.py), modify search criteria and run.  
 You can add more search criteria to this code:
 - Add filter criteria `AND column_you_choose = $6` after the `results` query; add parameters to `results`.
-- Add parameters to the `main()` function (both define and call).
+- Add parameters to the `vector_search()` function (both define and call).
 - Assign values to parameters in the main program.
 
 ## Notes
