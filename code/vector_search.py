@@ -14,7 +14,7 @@ import pandas as pd
 
 async def vector_search(qe, similarity_threshold, num_matches, min_price, max_price):
     """
-    Finding similar games to users' query using `pgvector` cosine similarity search
+    Finds similar games to users' query using `pgvector` cosine similarity search
     over all vector embeddings.
     """
     
@@ -77,6 +77,7 @@ if __name__ == "__main__":
     # Quick input validations.
     assert type(search_input) == str, "⚠️ Please input a valid input search text"
 
+    # Encode the query into a vector
     embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
     qe = embeddings_service.encode(search_input).tolist()  # qe = Query Embedding
 
