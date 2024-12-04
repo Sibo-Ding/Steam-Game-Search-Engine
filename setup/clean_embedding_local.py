@@ -1,4 +1,4 @@
-#==========Load environment==========
+#========== Load environment ==========
 # Save steam_data.csv under "data" folder
 
 import os
@@ -16,7 +16,7 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 
 def clean_embedding(IN_PATH):
-#==========Clean data==========
+#========== Clean data ==========
     tqdm.pandas()  # Progress bar
 
     # Read csv + Drop NA Title
@@ -66,7 +66,7 @@ def clean_embedding(IN_PATH):
         ]
     ]
 
-#==========Sentence transformer==========
+#========== Sentence transformer ==========
     # Initialize Sentence Transformer model
     model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
     # Other more computationally complex models
@@ -87,5 +87,5 @@ def clean_embedding(IN_PATH):
 if __name__ == "__main__":
 
     df = clean_embedding(IN_PATH)
-#==========Write csv==========
+#========== Write csv ==========
     df.to_csv(OUT_PATH, header=False, index=False)

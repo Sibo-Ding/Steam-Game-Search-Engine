@@ -16,10 +16,10 @@ def create_vector_indexes(m, ef_construction, operator):
 
 
 if __name__ == "__main__":
-    # @markdown Create an HNSW index on the `steam` table:
-    m = 16  # @param {type:"integer"}
-    ef_construction = 100  # @param {type:"integer"}
-    operator = "vector_cosine_ops"  # @param ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"]
+    # Create an HNSW index on the `steam` table:
+    m = 16  # type: integer
+    ef_construction = 100  # type: integer
+    operator = "vector_cosine_ops"  # ["vector_cosine_ops", "vector_l2_ops", "vector_ip_ops"]
 
     # Quick input validations.
     assert type(m) == int, "⚠️ Please input a valid value for m."

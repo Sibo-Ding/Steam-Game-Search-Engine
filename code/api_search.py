@@ -11,7 +11,7 @@ app = FastAPI()
 
 # Define input and output models for the API
 class SearchRequest(BaseModel):
-    query: str
+    search_input: str
     similarity_threshold: float = 0.1
     num_matches: int = 10
     min_price: int
@@ -34,7 +34,7 @@ async def search_games(request: SearchRequest):
     """
 
     # Encode the query into a vector
-    qe = embeddings_service.encode(request.query).tolist()  # qe = Query Embedding
+    qe = embeddings_service.encode(request.search_input).tolist()  # qe = Query Embedding
 
     # Connect to the database
     conn = await asyncpg.connect(**ASYNCPG_DATABASE_CONFIG)
