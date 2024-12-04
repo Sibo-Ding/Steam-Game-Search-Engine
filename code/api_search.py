@@ -14,8 +14,8 @@ class SearchRequest(BaseModel):
     query: str
     similarity_threshold: float = 0.1
     num_matches: int = 10
-    min_price: int = 0
-    max_price: int = 100
+    min_price: int
+    max_price: int
 
 class SearchResult(BaseModel):
     name: str
