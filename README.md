@@ -25,7 +25,7 @@ You can add more search criteria to this code, by doing:
 - Assign values to parameters in the main program.
 
 ## FastAPI
-1. Start your API server: In your terminal, change working directory to [code](code), run `py -m uvicorn api_search:app --reload` on Windows or `python3 -m uvicorn api_search:app --reload` on Mac.
+1. Start your API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn api_search:app --reload` on Windows or `python3 -m uvicorn api_search:app --reload` on Mac.
 2. Open Swagger UI: Go to your browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
