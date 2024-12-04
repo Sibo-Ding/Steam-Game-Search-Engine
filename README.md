@@ -24,6 +24,14 @@ You can add more search criteria to this code, by doing:
 - Add parameters to the `vector_search()` function (both define and call).
 - Assign values to parameters in the main program.
 
+## FastAPI
+1. Start your API server: In your terminal, change working directory to [code](code), run `py -m uvicorn api_search:app --reload`.
+2. Open Swagger UI: Go to your browser and navigate to `http://127.0.0.1:8000/docs`.
+3. Submit the request:
+    - Find the endpoint (`/search/`) in the Swagger UI.
+    - Click **Try it out**.
+    - Modify the JSON request.
+
 ## Notes
 1. When cleaning "Release Date", if a date is not in "Jan 1, 2000" format, set it to NaT/NaN. This includes "Apr 2019", "Apr-2019", "Coming soon", etc.
 2. Game name has non-English (e.g. French), non-alphabetical (e.g. Chinese), and non-character (e.g. emoji) words.

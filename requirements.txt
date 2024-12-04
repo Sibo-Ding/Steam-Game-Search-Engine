@@ -9,3 +9,5 @@ sentence-transformers
 pgvector
 asyncio
 asyncpg
+fastapi
+uvicorn
