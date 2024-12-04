@@ -2,8 +2,25 @@
 # https://cloud.google.com/blog/products/databases/using-pgvector-llms-and-langchain-with-google-cloud-databases
 # https://colab.research.google.com/github/GoogleCloudPlatform/python-docs-samples/blob/main/cloud-sql/postgres/pgvector/notebooks/pgvector_gen_ai_demo.ipynb#scrollTo=_zRBR9YJoENp
 
+#========== Input ==========
+# Enter a short description of the game to search for within a specified price range:
+search_input = "A game similar to Warhammer."  # type: string
+min_price = 0  # type: integer
+max_price = 100  # type: integer
+
+similarity_threshold = 0.1  # type: float
+num_matches = 10  # type: integer
+
+# Quick input validations.
+assert type(search_input) == str, "⚠️ Please input a valid input search text"
+
+#========== Encode the query into a vector ==========
 from sentence_transformers import SentenceTransformer
 
+embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+qe = embeddings_service.encode(search_input).tolist()  # qe = Query Embedding
+
+#========== Vector search ==========
 from pgvector.asyncpg import register_vector
 import asyncio
 import asyncpg
@@ -11,8 +28,10 @@ from database_config import ASYNCPG_DATABASE_CONFIG
 
 import pandas as pd
 
+matches = []  # A list storing search results
 
-async def vector_search(qe, similarity_threshold, num_matches, min_price, max_price):
+
+async def vector_search():
     """
     Finds similar games to users' query using `pgvector` cosine similarity search
     over all vector embeddings.
@@ -67,27 +86,9 @@ async def vector_search(qe, similarity_threshold, num_matches, min_price, max_pr
     await conn.close()
 
 
-if __name__ == "__main__":
+# Run the SQL commands now.
+asyncio.run(vector_search())
 
-    # @markdown Enter a short description of the toy to search for within a specified price range:
-    search_input = "A game similar to Warhammer."  # @param {type:"string"}
-    min_price = 0  # @param {type:"integer"}
-    max_price = 100  # @param {type:"integer"}
-
-    # Quick input validations.
-    assert type(search_input) == str, "⚠️ Please input a valid input search text"
-
-    # Encode the query into a vector
-    embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
-    qe = embeddings_service.encode(search_input).tolist()  # qe = Query Embedding
-
-    similarity_threshold = 0.1
-    num_matches = 10
-
-    matches = []  # A list storing search results
-
-    asyncio.run(vector_search(qe, similarity_threshold, num_matches, min_price, max_price))
-
-    # Show the results for similar products that matched the user query.
-    matches = pd.DataFrame(matches)
-    print(matches)
+# Show the results for similar products that matched the user query.
+matches = pd.DataFrame(matches)
+print(matches)
