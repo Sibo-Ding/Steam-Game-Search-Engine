@@ -1,11 +1,11 @@
 # eco395m-final-project
 
 ## Intuition of vector search
-Imagine you are in a grocery store. You want to find the apple that is most similar to a certain orange. But how do you compare an apple to an orange?
+Imagine you are in a grocery store. You want to find a fruit that is most similar to a certain orange. But how do you compare an apple to an orange?
 
-First, you convert the fruits into numbers: a red apple is represented by 1, an orange by 2, and a green apple by 10. These numbers could represent attributes such as price, your preference, or other characteristics. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to the red apple, the green apple is more different from the orange. In other words, the red apple is more similar to the orange.
+First, you convert the fruits into numbers: a lemon is represented by 1, an orange by 2, and a watermelon by 10. These numbers could represent attributes such as size, price, etc. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to the lemon, the watermelon is more different from the orange. In other words, the lemon is more similar to the orange.
 
-In our context, apples represent the games in our database, and the orange represents users' search input. We use [sentence transformers](https://sbert.net) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors.
+In our context, fruits represent the games in our database, and the orange represents users' search input. We use [sentence transformers](https://sbert.net) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the game most similar to users' search input.
 
 ## Datebase setup
 1. Create a PostgreSQL database instance in GCP SQL.
