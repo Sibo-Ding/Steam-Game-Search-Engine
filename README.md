@@ -15,7 +15,7 @@
 5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `steam` table with the "Import" option in GCP SQL instance's console.
 6. Create vector indexes by running [create_vector_indexes.py](setup/create_vector_indexes.py).
 
-Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py). However, this is not recommended because it is not efficient and hard to debug.  
+Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py). However, this is not recommended because it is hard to debug.  
 
 ## Vector search
 In [vector_search.py](code/vector_search.py), modify search criteria and run.  
@@ -24,7 +24,7 @@ You can add more search criteria to this code, by doing:
 - Assign values to parameters at the top of the program.
 
 ## FastAPI
-1. Start your API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn api_search:app --reload` on Windows or `python3 -m uvicorn api_search:app --reload` on Mac.
+1. Start your API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn main:app --reload` on Windows or `python3 -m uvicorn main:app --reload` on Mac.
 2. Open Swagger UI: Go to your browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
