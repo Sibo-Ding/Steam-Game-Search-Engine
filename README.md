@@ -3,7 +3,7 @@
 ## Intuition of vector search
 Imagine you are in a grocery store. You want to find the apple that is most similar to a certain orange. But how do you compare an apple to an orange?
 
-First, you convert the fruits into numbers: a red apple is represented by 1, an orange by 2, and a green apple by 10. These numbers could represent attributes such as price, your preference, or other characteristics. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to red apples, green apples are more different from oranges. In other words, red apples are more similar to oranges.
+First, you convert the fruits into numbers: a red apple is represented by 1, an orange by 2, and a green apple by 10. These numbers could represent attributes such as price, your preference, or other characteristics. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to the red apple, the green apple is more different from the orange. In other words, the red apple is more similar to the orange.
 
 In our context, apples represent the games in our database, and the orange represents users' search input. We use [sentence transformers](https://sbert.net) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors.
 
