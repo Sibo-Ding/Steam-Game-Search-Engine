@@ -5,12 +5,12 @@ Imagine you are in a grocery store. You want to find a fruit that is most simila
 
 First, you convert the fruits into numbers: a lemon is represented by 1, an orange by 2, and a watermelon by 10. These numbers could represent attributes such as size, price, etc. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to the lemon, the watermelon is more different from the orange. In other words, the lemon is more similar to the orange.
 
-In our context, fruits represent the games in our database, and the orange represents users' search input. We use [sentence transformers](https://sbert.net) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the game most similar to users' search input.
+In our context, fruits represent the games in our database, and the orange represents users' search input. We use [sentence transformers](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the game most similar to users' search input.
 
 ## Datebase setup
 1. Create a PostgreSQL database instance in GCP SQL.
 2. Create a database called `steam` in GCP SQL in the "Databases" tab.
-3. Create a `.env` file at the top of the repo saving database credentials, following the format in [demo.env](demo.env). You can use the default postgres username, `postgres`, and the password you set. Your host can be found in GCP SQL on the "Overview" tab. The port will be the default Postgres port: `5432`. Connect with database as `steam`.
+3. Create a `.env` file at the top of the repo saving database credentials, following the format in [demo.env](demo.env). You can use the default username `postgres` and the password you set. Your host can be found in GCP SQL on the "Overview" tab. The port will be the default Postgres port: `5432`. Connect with database as `steam`.
 
 ## Setup
 1. Install packages in [requirements.txt](requirements.txt).
@@ -31,12 +31,15 @@ You can add more search criteria to this code, by doing:
 - Assign values to parameters at the top of the program.
 
 ## FastAPI
-1. Start your API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn main:app --reload` on Windows or `python3 -m uvicorn main:app --reload` on Mac.
+1. Start your API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn main:app --reload` on Windows or `python3 -m uvicorn main:app --reload` on MacOS.
 2. Open Swagger UI: Go to your browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
     - Modify the JSON request.
+
+## Docker
+Download Docker Desktop for [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Windows](https://docs.docker.com/docker-for-windows/install/). Windows users may need to connect Docker Desktop to WSL.
 
 ## Notes
 1. When cleaning "Release Date", if a date is not in "Jan 1, 2000" format, set it to NaT/NaN. This includes "Apr 2019", "Apr-2019", "Coming soon", etc.
