@@ -42,7 +42,7 @@ You can add more search criteria to this code, by doing:
 1. Download Docker Desktop for [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Windows](https://docs.docker.com/docker-for-windows/install/). Windows users may need to connect Docker Desktop to WSL.
 2. Build the Docker image: In the terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t fastapi-app .`.
 3. Run the Docker container: Run `docker run -p 8080:8080 fastapi-app`.
-4. Open Swagger UI: Go to a browser and navigate to [http://localhost:8080/docs](hhttp://localhost:8080/docs).
+4. Open Swagger UI: Go to a browser and navigate to [http://localhost:8080/docs](http://localhost:8080/docs).
 5. Same as [FastAPI](#fastapi) step 3.
 
 
