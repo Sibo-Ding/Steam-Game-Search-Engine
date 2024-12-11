@@ -31,8 +31,8 @@ You can add more search criteria to this code, by doing:
 - Assign values to parameters at the top of the program.
 
 ## FastAPI
-1. Start your API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn main:app --reload` on Windows or `python3 -m uvicorn main:app --reload` on MacOS.
-2. Open Swagger UI: Go to your browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+1. Start API server: In the terminal, change the working directory to [code](code), run `py -m uvicorn main:app --reload` on Windows or `python3 -m uvicorn main:app --reload` on MacOS.
+2. Open Swagger UI: Go to a browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
@@ -40,9 +40,9 @@ You can add more search criteria to this code, by doing:
 
 ## Docker
 1. Download Docker Desktop for [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Windows](https://docs.docker.com/docker-for-windows/install/). Windows users may need to connect Docker Desktop to WSL.
-2. Build the Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t fastapi-app .`.
+2. Build the Docker image: In the terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t fastapi-app .`.
 3. Run the Docker container: Run `docker run -p 8080:8080 fastapi-app`.
-4. Open Swagger UI: Go to your browser and navigate to [http://localhost:8080/docs](hhttp://localhost:8080/docs).
+4. Open Swagger UI: Go to a browser and navigate to [http://localhost:8080/docs](hhttp://localhost:8080/docs).
 5. Same as [FastAPI](#fastapi) step 3.
 
 
