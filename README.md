@@ -5,7 +5,12 @@ Imagine you are in a grocery store. You want to find a fruit that is most simila
 
 First, you convert the fruits into numbers: a lemon is represented by 1, an orange by 2, and a watermelon by 10. These numbers could represent attributes such as size, price, etc. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to the lemon, the watermelon is more different from the orange. In other words, the lemon is more similar to the orange.
 
-In our context, fruits represent the games in our database, and the orange represents users' search input. We use [sentence transformers](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the game most similar to users' search input.
+In our context, fruits represent the games in our database, and the orange represents users' search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to users' search input.
+
+## Intuition of API
+An API (Application Programming Interface) is like a factory, or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—all without requiring people to understand the internal workings of the factory.  
+
+Similarly, an API takes a request, processes it according to predefined rules, and sends a response. In our context, the API takes a user's search input and returns the most similar games.
 
 ## Datebase setup
 1. Create a PostgreSQL database instance in GCP SQL.
@@ -32,7 +37,7 @@ You can add more search criteria to this code, by doing:
 
 ## FastAPI
 1. Start API server by running [main.py](code/main.py).
-2. Open Swagger UI: Go to a browser and navigate to [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs).
+2. Open Swagger UI on a browser by navigating to [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs) or [http://localhost:8080/docs](http://localhost:8080/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
@@ -40,7 +45,7 @@ You can add more search criteria to this code, by doing:
 
 ## Docker
 1. Install Docker Desktop for [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Windows](https://docs.docker.com/docker-for-windows/install/). Windows users may need to connect Docker Desktop to WSL.
-2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` by the image name you set, and we call it `fastapi-app`.
+2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` by the image name you set.
 3. Run a Docker container: Run `docker run -p 8080:8080 <your-image-name>`.
 4. Same as [FastAPI](#fastapi) step 2.
 5. Same as [FastAPI](#fastapi) step 3.
@@ -49,8 +54,12 @@ You can add more search criteria to this code, by doing:
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
 2. For M1/M2 Mac users, redo [Docker](#docker) step 2 by running `docker buildx build --platform linux/amd64 -t <your-image-name> .`, because Google Cloud Run does not support arm64. You can use a new image name to distinguish the local one.
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` by your GCP project ID.
-4. Deploy the image on GCP: run `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed`. Replace `<your-service-name>` by the service name you set. You will be prompted to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
+4. Deploy the image on GCP: run `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=2Gi`. Replace `<your-service-name>` by the service name you set. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
 5. Wait a few moments until the deployment is complete. On success, the command line displays the service URL.
+6. Similar to [FastAPI](#fastapi) step 2, take the sercive URL and add `/docs` after it.
+7. Same as [FastAPI](#fastapi) step 3.
+
+Reference: [Deploy a Dockerized FastAPI App to Google Cloud Platform](https://towardsdatascience.com/deploy-a-dockerized-fastapi-app-to-google-cloud-platform-24f72266c7ef?sk=11195a53615912077030568c8fe81b68) by Edward Krueger and Douglas Franklin.
 
 ## Notes
 1. When cleaning "Release Date", if a date is not in "Jan 1, 2000" format, set it to NaT/NaN. This includes "Apr 2019", "Apr-2019", "Coming soon", etc.
