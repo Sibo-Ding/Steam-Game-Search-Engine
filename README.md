@@ -1,5 +1,8 @@
 # eco395m-final-project
 
+## Introduction
+We use vector search
+
 ## Intuition of vector search
 Imagine you are in a grocery store trying to find a fruit most similar to an orange. But how to compare an apple to an orange?
 
@@ -11,6 +14,13 @@ In our case, the fruits represent the games in our database, and the orange repr
 An API (Application Programming Interface) is like a factory or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—without requiring people to understand the internal workings of the factory.  
 
 Similarly, an API takes a request, processes it according to predefined rules, and returns a response. In our case, the API takes a user's search input and returns the most similar games.
+
+## Intuition of Docker and Deploying on GCP
+When you write a program on your computer. Normally, it might not work on someone else's computer because their system could be different (different operating system, different libraries, etc.).  
+
+Docker creates "containers", holding your program and all its dependencies (everything it needs to run like libraries, configurations, etc.) in a consistent way, no matter where it runs. Whether on your computer, a server, or the cloud, the program will always run the same.  
+
+We then deploy Docker on GCP to allow users to access our API publicly.
 
 ## Datebase setup
 1. Create a PostgreSQL database instance in GCP SQL.
