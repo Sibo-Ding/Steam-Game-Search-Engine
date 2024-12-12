@@ -1,38 +1,38 @@
 # eco395m-final-project
 
 ## Intuition of vector search
-Imagine you are in a grocery store. You want to find a fruit that is most similar to a certain orange. But how do you compare an apple to an orange?
+Imagine you are in a grocery store trying to find a fruit most similar to an orange. But how to compare an apple to an orange?
 
-First, you convert the fruits into numbers: a lemon is represented by 1, an orange by 2, and a watermelon by 10. These numbers could represent attributes such as size, price, etc. Next, you decide to use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to the lemon, the watermelon is more different from the orange. In other words, the lemon is more similar to the orange.
+First, you assign numerical values to the fruits: a lemon is 1, an orange is 2, and a watermelon is 10. These numbers can represent attributes such as size, price, etc. Next, you use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to a lemon, a watermelon differs more from an orange. In other words, the lemon is more similar to the orange.
 
-In our context, fruits represent the games in our database, and the orange represents users' search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to users' search input.
+In our case, the fruits represent the games in our database, and the orange represents a user's search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to the user's search input.
 
 ## Intuition of API
-An API (Application Programming Interface) is like a factory, or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—all without requiring people to understand the internal workings of the factory.  
+An API (Application Programming Interface) is like a factory or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—without requiring people to understand the internal workings of the factory.  
 
-Similarly, an API takes a request, processes it according to predefined rules, and sends a response. In our context, the API takes a user's search input and returns the most similar games.
+Similarly, an API takes a request, processes it according to predefined rules, and returns a response. In our case, the API takes a user's search input and returns the most similar games.
 
 ## Datebase setup
 1. Create a PostgreSQL database instance in GCP SQL.
 2. Create a database called `steam` in GCP SQL in the "Databases" tab.
-3. Create a `.env` file at the top of the repo saving database credentials, following the format in [demo.env](demo.env). You can use the default username `postgres` and the password you set. Your host can be found in GCP SQL on the "Overview" tab. The port will be the default Postgres port: `5432`. Connect with database as `steam`.
+3. Create a `.env` file at the top of the repo saving database credentials, following the format in [demo.env](demo.env). You can use the default username `postgres` and the password you set. Your host can be found on the GCP SQL "Overview" tab. The default Postgres port is `5432`. Connect to the database `steam`.
 
 ## Setup
 1. Install packages in [requirements.txt](requirements.txt).
 2. Download data from [Kaggle](https://www.kaggle.com/datasets/nikatomashvili/steam-games-dataset), save as [data/steam_data.csv](data/steam_data.csv).
 3. Create a SQL table by running [create_table.py](setup/create_table.py).
-4. Clean data and use sentence transformer to create a column with vector embeddings by running [clean_embedding_local.py](setup/clean_embedding_local.py) for about 1.5 hours on my computer, output `data/steam_clean_no_header.csv`.
+4. Clean data and use a sentence transformer to create a column with vector embeddings by running [clean_embedding_local.py](setup/clean_embedding_local.py) for about 1.5 hours on my computer, output `data/steam_clean_no_header.csv`.
     - Loading `sentence_transformers` package locally requires `numpy.__version__` < 2 and `keras.__version__` < 3.
-    - Alternatively, run [clean_embedding_GCP_Vertex.ipynb](setup/clean_embedding_GCP_Vertex.ipynb) on GCP Vertex AI for about 1.5 hours; run [clean_embedding_Google_Drive.ipynb](setup/clean_embedding_Google_Drive.ipynb) on Google Drive for about 3.5 hours. Detailed instructions about loading data are in those files.
-5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `steam` table with the "Import" option in GCP SQL instance's console.
+    - Alternatively, run [clean_embedding_GCP_Vertex.ipynb](setup/clean_embedding_GCP_Vertex.ipynb) on GCP Vertex AI about 1.5 hours or [clean_embedding_Google_Drive.ipynb](setup/clean_embedding_Google_Drive.ipynb) on Google Drive for about 3.5 hours. Detailed instructions for loading data are in these files.
+5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `steam` table using the "Import" option in GCP SQL instance's console.
 6. Create vector indexes by running [create_vector_indexes.py](setup/create_vector_indexes.py).
 
-Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py). However, this is not recommended because it is hard to debug.  
+Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py), but this is not recommended because it is hard to debug.  
 
 ## Vector search
 In [vector_search.py](code/vector_search.py), modify search criteria and run.  
-You can add more search criteria to this code, by doing:
-- Add filter criteria `AND column_you_choose = $6` after the `results` query; add parameters to `results`.
+To add more search criteria:
+- Add filter conditions like `AND column_you_choose = $6` after the `results` query, and add corresponding parameters to `results`.
 - Assign values to parameters at the top of the program.
 
 ## FastAPI
@@ -44,18 +44,18 @@ You can add more search criteria to this code, by doing:
     - Modify the JSON request.
 
 ## Docker
-1. Install Docker Desktop for [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Windows](https://docs.docker.com/docker-for-windows/install/). Windows users may need to connect Docker Desktop to WSL.
-2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` by the image name you set.
-3. Run a Docker container: Run `docker run -p 8080:8080 <your-image-name>`.
+1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect Docker Desktop to WSL.
+2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` with the image name you choose.
+3. Run a Docker container by running `docker run -p 8080:8080 <your-image-name>`.
 4. Same as [FastAPI](#fastapi) step 2.
 5. Same as [FastAPI](#fastapi) step 3.
 
 ## Deploy Docker on GCP
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
-2. For M1/M2 Mac users, redo [Docker](#docker) step 2 by running `docker buildx build --platform linux/amd64 -t <your-image-name> .`, because Google Cloud Run does not support arm64. You can use a new image name to distinguish the local one.
-3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` by your GCP project ID.
-4. Deploy the image on GCP: run `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=2Gi`. Replace `<your-service-name>` by the service name you set. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
-5. Wait a few moments until the deployment is complete. On success, the command line displays the service URL.
+2. For M1/M2 Mac users, redo [Docker](#docker) step 2 by running `docker buildx build --platform linux/amd64 -t <your-image-name> .`, because Google Cloud Run does not support arm64. You can use a new image name to distinguish from the local one.
+3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
+4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=2Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
+5. Wait a few moments for the deployment to complete. Once successful, the command line will display the service URL.
 6. Similar to [FastAPI](#fastapi) step 2, take the sercive URL and add `/docs` after it.
 7. Same as [FastAPI](#fastapi) step 3.
 
