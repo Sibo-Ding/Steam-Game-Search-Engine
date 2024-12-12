@@ -1,6 +1,9 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+import os
+import uvicorn
+
 from sentence_transformers import SentenceTransformer
 from pgvector.asyncpg import register_vector
 import asyncpg
@@ -82,3 +85,8 @@ async def search_games(request: SearchRequest):
         await conn.close()
 
     return matches
+
+
+if __name__ == "__main__":
+    PORT = int(os.getenv("PORT", 8080))  # Default to 8080 if PORT is not set
+    uvicorn.run("main:app", host="0.0.0.0", port=PORT)

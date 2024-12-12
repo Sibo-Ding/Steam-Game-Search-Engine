@@ -31,8 +31,8 @@ You can add more search criteria to this code, by doing:
 - Assign values to parameters at the top of the program.
 
 ## FastAPI
-1. Start API server: In your terminal, change the working directory to [code](code), run `py -m uvicorn main:app --reload` on Windows or `python3 -m uvicorn main:app --reload` on MacOS.
-2. Open Swagger UI: Go to a browser and navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
+1. Start API server by running [main.py](code/main.py).
+2. Open Swagger UI: Go to a browser and navigate to [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
@@ -42,11 +42,11 @@ You can add more search criteria to this code, by doing:
 1. Install Docker Desktop for [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Windows](https://docs.docker.com/docker-for-windows/install/). Windows users may need to connect Docker Desktop to WSL.
 2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` by the image name you set, and we call it `fastapi-app`.
 3. Run a Docker container: Run `docker run -p 8080:8080 <your-image-name>`.
-4. Open Swagger UI: Go to a browser and navigate to [http://localhost:8080/docs](http://localhost:8080/docs).
+4. Same as [FastAPI](#fastapi) step 2.
 5. Same as [FastAPI](#fastapi) step 3.
 
 ## Deploy Docker on GCP
-1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate. Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
+1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
 2. For M1/M2 Mac users, redo [Docker](#docker) step 2 by running `docker buildx build --platform linux/amd64 -t <your-image-name> .`, because Google Cloud Run does not support arm64. You can use a new image name to distinguish the local one.
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` by your GCP project ID.
 4. Deploy the image on GCP: run `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed`. Replace `<your-service-name>` by the service name you set. You will be prompted to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
