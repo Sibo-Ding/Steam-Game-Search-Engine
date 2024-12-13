@@ -9,17 +9,19 @@ Imagine you are in a grocery store trying to find a fruit most similar to an ora
 
 First, you assign numerical values to the fruits: a lemon is 1, an orange is 2, and a watermelon is 10. These numbers can represent attributes such as size, price, etc. Next, you use the difference between these numbers as a proxy for the difference between the fruits. This way, compared to a lemon, a watermelon differs more from an orange. In other words, the lemon is more similar to the orange.
 
-In our case, the fruits represent the games in our database, and the orange represents a user's search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to the user's search input.
+In our case, the fruits represent the games in our database, and the orange represents a search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to the search input.
 
 ### Intuition of reranking with cross-encoder
 After retrieving the initial search results, reranking use a more computationally expensive model to better rank them.  
 
-A cross-encoder is a model used in the reranking process. Unlike an encoder-decoder model where the user's search input and initial search results are processed independently, a cross-encoder processes them **together** in a single pass to evaluate how well they match.   
+A cross-encoder is a model used in the reranking process. Unlike an encoder-decoder model where the search input and initial search results are processed independently, a cross-encoder processes them **together** in a single step to directly evaluate how well they match.   
+
+Back to the grocery store example, instead of assigning values like "lemon = 1" and "orange = 2", you evaluate the match between this "lemon-orange" pair, considering how well a lemon fits with an orange in a more holistic way.
 
 ### Intuition of API
 An API (Application Programming Interface) is like a factory or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—without requiring people to understand the internal workings of the factory.  
 
-Similarly, an API takes a request, processes it according to predefined rules, and returns a response. In our case, the API takes a user's search input and returns the most similar games.
+Similarly, an API takes a request, processes it according to predefined rules, and returns a response. In our case, the API takes a search input and returns the most similar games.
 
 ![fastapi-1](images/fastapi-1.png)
 ![fastapi-2](images/fastapi-2.png)
