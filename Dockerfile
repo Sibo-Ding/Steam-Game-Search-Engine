@@ -11,8 +11,10 @@ COPY code /app
 # Install the dependencies
 RUN pip install -r requirements.txt
 
-# Make port 8080 available to the world outside this container
+# Make ports available to the world outside this container
+# FastAPI (8080) and Streamlit (8501)
 EXPOSE 8080
+EXPOSE 8501
 
 # Run Python script
-CMD ["python", "fastapi_app.py"]
+CMD ["python", "main.py"]

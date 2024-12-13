@@ -19,6 +19,6 @@ if __name__ == "__main__":
 
     run_fastapi()
 
-    time.sleep(15)  # Wait for FastAPI to start up
+    time.sleep(10)  # Wait for FastAPI to start up
 
     run_streamlit()

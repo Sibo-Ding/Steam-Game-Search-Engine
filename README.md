@@ -69,7 +69,7 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 
 ### FastAPI
 1. Start API server by running [fastapi_app.py](code/fastapi_app.py).
-2. Open Swagger UI on a browser by visiting [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) or [http://localhost:8080/docs](http://localhost:8080/docs).
+2. Open Swagger UI on a browser by visiting [http://localhost:8080/docs](http://localhost:8080/docs). (Equivalent URLs include [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs), but `localhost` is the most robust.)
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
@@ -77,14 +77,15 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 
 ### Streamlit
 1. Start Streamlit app: After running [fastapi_app.py](code/fastapi_app.py), in your terminal, change the working directory to [code](code), run `py -m streamlit run streamlit_app.py` on Windows or `python3 -m streamlit run streamlit_app.py` on MacOS.
-2. Open a browser and visit [http://127.0.0.1:8501](http://127.0.0.1:8501) or [http://localhost:8501](http://localhost:8501).
+2. Open a browser and visit or [http://localhost:8501](http://localhost:8501). (Equivalent URLs include [http://127.0.0.1:8501](http://127.0.0.1:8501) and [http://0.0.0.0:8501](http://0.0.0.0:8501), but `localhost` is the most robust.)
+3. Submit the request similar to [FastAPI](#fastapi) step 3.
 
 ### Docker
-1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect Docker Desktop to WSL.
+1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect it to WSL.
 2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` with the image name you choose.
-3. Run a Docker container by running `docker run -p 8080:8080 <your-image-name>`.
-4. Same as [FastAPI](#fastapi) step 2.
-5. Same as [FastAPI](#fastapi) step 3.
+3. Run a Docker container by running `docker run -p 8080:8080 -p 8501:8501 <your-image-name>`.
+4. Same as [FastAPI](#fastapi) or [Streamlit](#streamlit) step 2.
+5. Same as [FastAPI](#fastapi) or [Streamlit](#streamlit) step 3.
 
 ### Deploy Docker on GCP
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
