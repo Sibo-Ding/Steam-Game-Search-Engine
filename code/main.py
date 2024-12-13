@@ -20,6 +20,7 @@ class SearchRequest(BaseModel):
     min_price: int
     max_price: int
 
+
 class SearchResult(BaseModel):
     name: str
     description: str
@@ -83,8 +84,7 @@ async def search_games(request: SearchRequest):
 
         # Prepare query-result pairs for reranking
         query_description_pairs = [
-            (request.search_input, candidate["description"])
-            for candidate in candidates
+            (request.search_input, candidate["description"]) for candidate in candidates
         ]
 
         # Rerank results using the cross-encoder
@@ -93,8 +93,9 @@ async def search_games(request: SearchRequest):
             candidate["relevance_score"] = scores[i]
 
         # Sort candidates by relevance score in descending order
-        reranked_results = sorted(candidates, key=lambda x: x["relevance_score"], reverse=True)
-
+        reranked_results = sorted(
+            candidates, key=lambda x: x["relevance_score"], reverse=True
+        )
 
     finally:
         await conn.close()
