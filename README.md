@@ -4,7 +4,7 @@
 With thousands of games on Steam, it is easy to get lost trying to find the right one. 
 Whether you are searching for a game to relax after a long day, dive into a new adventure, or challenge yourself with a competitive experience, our search engine helps you quickly find the perfect game. No more endless scrolling—just smooth, fast, and personalized game discovery!  
 
-Using [Google Cloud Platform (GCP)](https://cloud.google.com/) as our primary platform, we build a game search engine that finds games most similar to a user's search input. We utilize vector search in PostgreSQL and rerank the search results using a cross-encoder. We then make the search engine accessible through an API and deploy it publicly.
+Using [Google Cloud Platform (GCP)](https://cloud.google.com/) as our primary platform, we build a game search engine that finds games most similar to a user's search input. We utilize vector search in PostgreSQL and rerank the search results using a cross-encoder. We then make the search engine accessible through an API with a Streamlit interface and deploy them publicly.
 
 ## Methods
 ### Intuition of vector search
