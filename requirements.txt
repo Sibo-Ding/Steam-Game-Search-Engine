@@ -11,3 +11,5 @@ asyncio
 asyncpg
 fastapi
 uvicorn
+streamlit
+requests

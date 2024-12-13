@@ -6,7 +6,7 @@ Whether you are searching for a game to relax after a long day, dive into a new 
 
 Using [Google Cloud Platform (GCP)](https://cloud.google.com/) as our primary platform, we build a game search engine that finds games most similar to a user's search input. We utilize vector search in PostgreSQL and rerank the search results using a cross-encoder. We then make the search engine accessible through an API and deploy it publicly.
 
-## Methodology
+## Methods
 ### Intuition of vector search
 Imagine you are in a grocery store trying to find a fruit most similar to an orange. But how to compare an apple to an orange?
 
@@ -30,7 +30,14 @@ Similarly, an API takes a request, processes it according to predefined rules, a
 <br/>  
 ![fastapi-2](images/fastapi-2.png)
 
-### Intuition of Docker and Deploying on GCP
+### Intuition of Streamlit
+Streamlit is a Python library that simplifies building web applications by writing Python code. It provides an easy and fast way to create visual and interactive interfaces without requiring knowledge of front-end development (like HTML, CSS, or JavaScript).
+
+![streamlit-1](images/streamlit-1.png)
+<br/>  
+![streamlit-2](images/streamlit-2.png)
+
+### Intuition of Docker and deploying it on GCP
 When you write a program on your computer. Normally, it might not work on someone else's computer because their system could be different (different operating system, different libraries, etc.).  
 
 Docker creates "containers", holding your program and all its dependencies (everything it needs to run like libraries, configurations, etc.) in a consistent way, no matter where it runs. Whether on your computer, a server, or the cloud, the program will always run the same.  
@@ -62,11 +69,15 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 
 ### FastAPI
 1. Start API server by running [fastapi_app.py](code/fastapi_app.py).
-2. Open Swagger UI on a browser by navigating to [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs) or [http://localhost:8080/docs](http://localhost:8080/docs).
+2. Open Swagger UI on a browser by visiting [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) or [http://localhost:8080/docs](http://localhost:8080/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
     - Modify the JSON request.
+
+### Streamlit
+1. Start Streamlit app: After running [fastapi_app.py](code/fastapi_app.py), in your terminal, change the working directory to [code](code), run `py -m streamlit run streamlit_app.py` on Windows or `python3 -m streamlit run streamlit_app.py` on MacOS.
+2. Open a browser and visit [http://127.0.0.1:8501](http://127.0.0.1:8501) or [http://localhost:8501](http://localhost:8501).
 
 ### Docker
 1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect Docker Desktop to WSL.
