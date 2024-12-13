@@ -11,6 +11,11 @@ First, you assign numerical values to the fruits: a lemon is 1, an orange is 2, 
 
 In our case, the fruits represent the games in our database, and the orange represents a user's search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to the user's search input.
 
+### Intuition of reranking with cross-encoder
+After retrieving the initial search results, reranking use a more computationally expensive model to better rank them.  
+
+A cross-encoder is a model used in the reranking process. It considers both the query and each initial search result **together** to evaluate how well they match. Unlike an encoder-decoder model where the query and the initial search result are processed independently, a cross-encoder processes them together in a single pass.
+
 ### Intuition of API
 An API (Application Programming Interface) is like a factory or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—without requiring people to understand the internal workings of the factory.  
 
@@ -41,7 +46,7 @@ We then deploy Docker on GCP to allow users to access our API publicly.
 
 Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py), but this is not recommended because it is hard to debug.  
 
-### Vector search
+### Vector search and rerank with cross-encoder
 In [vector_search.py](code/vector_search.py), modify search criteria and run.  
 To add more search criteria:
 - Add filter conditions like `AND column_you_choose = $6` after the `results` query, and add corresponding parameters to `results`.

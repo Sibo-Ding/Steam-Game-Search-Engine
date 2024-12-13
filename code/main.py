@@ -4,7 +4,7 @@ from pydantic import BaseModel
 import os
 import uvicorn
 
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 from pgvector.asyncpg import register_vector
 import asyncpg
 from database_config import ASYNCPG_DATABASE_CONFIG
@@ -26,14 +26,15 @@ class SearchResult(BaseModel):
     original_price: float
 
 
-# Load the SentenceTransformer model globally
+# Load the SentenceTransformer and CrossEncoder models globally
 embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
 
 # API Endpoint for Vector Search
 @app.post("/search/", response_model=list[SearchResult])
 async def search_games(request: SearchRequest):
     """
-    Handles the API request to search for similar games.
+    Handles the API request to search for similar games and rerank results.
     """
 
     # Encode the query into a vector
@@ -67,12 +68,11 @@ async def search_games(request: SearchRequest):
             request.max_price,
         )
 
-        # Check if results exist
         if not results:
             raise HTTPException(status_code=404, detail="Did not find any results. Adjust the query parameters.")
 
-        # Format the results
-        matches = [
+        # Collect the description for all the matched similar games.
+        candidates = [
             {
                 "name": r["name"],
                 "description": r["description"],
@@ -81,10 +81,25 @@ async def search_games(request: SearchRequest):
             for r in results
         ]
 
+        # Prepare query-result pairs for reranking
+        query_description_pairs = [
+            (request.search_input, candidate["description"])
+            for candidate in candidates
+        ]
+
+        # Rerank results using the cross-encoder
+        scores = cross_encoder.predict(query_description_pairs)
+        for i, candidate in enumerate(candidates):
+            candidate["relevance_score"] = scores[i]
+
+        # Sort candidates by relevance score in descending order
+        reranked_results = sorted(candidates, key=lambda x: x["relevance_score"], reverse=True)
+
+
     finally:
         await conn.close()
 
-    return matches
+    return reranked_results
 
 
 if __name__ == "__main__":

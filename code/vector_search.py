@@ -15,7 +15,7 @@ num_matches = 10  # type: integer
 assert type(search_input) == str, "⚠️ Please input a valid input search text"
 
 #========== Encode the query into a vector ==========
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
 
 embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 qe = embeddings_service.encode(search_input).tolist()  # qe = Query Embedding
@@ -28,7 +28,7 @@ from database_config import ASYNCPG_DATABASE_CONFIG
 
 import pandas as pd
 
-matches = []  # A list storing search results
+candidates = []  # A list storing search results
 
 
 async def vector_search():
@@ -75,7 +75,7 @@ async def vector_search():
 
     for r in results:
         # Collect the description for all the matched similar games.
-        matches.append(
+        candidates.append(
             {
                 "name": r["name"],
                 "description": r["description"],
@@ -89,6 +89,25 @@ async def vector_search():
 # Run the SQL commands now.
 asyncio.run(vector_search())
 
+#========== Rerank results with a cross-encoder ==========
+# Prepare query-result pairs for reranking
+query_description_pairs = [
+    (search_input, candidate["description"])
+    for candidate in candidates
+]
+
+# Load the cross-encoder model
+cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+
+# Rerank results using the cross-encoder
+scores = cross_encoder.predict(query_description_pairs)
+for i, score in enumerate(scores):
+    candidates[i]["relevance_score"] = score
+
+# Sort candidates by relevance score in descending order
+reranked_results = sorted(candidates, key=lambda x: x["relevance_score"], reverse=True)
+
+# ====================
 # Show the results for similar products that matched the user query.
-matches = pd.DataFrame(matches)
+matches = pd.DataFrame(reranked_results)
 print(matches)
