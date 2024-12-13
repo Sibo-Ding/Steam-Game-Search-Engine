@@ -24,6 +24,7 @@ An API (Application Programming Interface) is like a factory or a math function.
 Similarly, an API takes a request, processes it according to predefined rules, and returns a response. In our case, the API takes a search input and returns the most similar games.
 
 ![fastapi-1](images/fastapi-1.png)
+<br/>  
 ![fastapi-2](images/fastapi-2.png)
 
 ### Intuition of Docker and Deploying on GCP
