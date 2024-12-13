@@ -70,15 +70,15 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 ### FastAPI
 1. Start API server by running [fastapi_app.py](code/fastapi_app.py).
 2. Open Swagger UI on a browser by visiting [http://localhost:8080/docs](http://localhost:8080/docs). (Equivalent URLs include [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) and [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs), but `localhost` is the most robust.)
-3. Submit the request:
+3. Submit a request:
     - Find the endpoint (`/search/`) in the Swagger UI.
     - Click **Try it out**.
     - Modify the JSON request.
 
 ### Streamlit
 1. Start Streamlit app: After running [fastapi_app.py](code/fastapi_app.py), in your terminal, change the working directory to [code](code), run `py -m streamlit run streamlit_app.py` on Windows or `python3 -m streamlit run streamlit_app.py` on MacOS.
-2. Open a browser and visit or [http://localhost:8501](http://localhost:8501). (Equivalent URLs include [http://127.0.0.1:8501](http://127.0.0.1:8501) and [http://0.0.0.0:8501](http://0.0.0.0:8501), but `localhost` is the most robust.)
-3. Submit the request similar to [FastAPI](#fastapi) step 3.
+2. Open Streamlit UI on a browser by visiting [http://localhost:8501](http://localhost:8501). (Equivalent URLs include [http://127.0.0.1:8501](http://127.0.0.1:8501) and [http://0.0.0.0:8501](http://0.0.0.0:8501), but `localhost` is the most robust.)
+3. Submit a request similar to [FastAPI](#fastapi) step 3.
 
 ### Docker
 1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect it to WSL.
