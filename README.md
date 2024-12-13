@@ -1,4 +1,4 @@
-# eco395m-final-project
+# Steam Game Search Engine
 
 ## Introduction
 With thousands of games on Steam, it is easy to get lost trying to find the right one. 
@@ -92,7 +92,7 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 ### Deploy Docker on GCP
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
 2. It is challenging to deploy Streamlit on GCP, so we only deploy FastAPI. Copy the contents in [Dockerfile-api-GCP](Dockerfile-api-GCP) to [Dockerfile](Dockerfile) and redo [Docker](#docker) step 2. You can use a new image name to distinguish from the local one.
-    - For M1/M2 Mac users, run `docker buildx build --platform linux/amd64 -t <your-image-name> .`, because Google Cloud Run does not support arm64.
+    - For M1/M2 Mac users, run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support arm64.
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
 4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=2Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
 5. Wait a few moments for the deployment to complete. Once successful, the command line will display the service URL.
@@ -109,6 +109,3 @@ Reference: [Deploy a Dockerized FastAPI App to Google Cloud Platform](https://to
 ## Notes
 1. When cleaning "Release Date", if a date is not in "Jan 1, 2000" format, set it to NaT/NaN. This includes "Apr 2019", "Apr-2019", "Coming soon", etc.
 2. Game name has non-English (e.g. French), non-alphabetical (e.g. Chinese), and non-character (e.g. emoji) words.
-
-## Remember to format code (black)
-## Remember to update requirements.txt
