@@ -53,7 +53,7 @@ To add more search criteria:
 - Assign values to parameters at the top of the program.
 
 ### FastAPI
-1. Start API server by running [main.py](code/main.py).
+1. Start API server by running [fastapi_app.py](code/fastapi_app.py).
 2. Open Swagger UI on a browser by navigating to [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs) or [http://localhost:8080/docs](http://localhost:8080/docs).
 3. Submit the request:
     - Find the endpoint (`/search/`) in the Swagger UI.

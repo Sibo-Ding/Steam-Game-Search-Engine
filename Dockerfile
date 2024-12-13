@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Run Python script
-CMD ["python", "main.py"]
+CMD ["python", "fastapi_app.py"]
