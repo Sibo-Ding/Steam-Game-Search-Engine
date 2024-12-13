@@ -14,12 +14,15 @@ In our case, the fruits represent the games in our database, and the orange repr
 ### Intuition of reranking with cross-encoder
 After retrieving the initial search results, reranking use a more computationally expensive model to better rank them.  
 
-A cross-encoder is a model used in the reranking process. It considers both the query and each initial search result **together** to evaluate how well they match. Unlike an encoder-decoder model where the query and the initial search result are processed independently, a cross-encoder processes them together in a single pass.
+A cross-encoder is a model used in the reranking process. Unlike an encoder-decoder model where the user's search input and initial search results are processed independently, a cross-encoder processes them **together** in a single pass to evaluate how well they match.   
 
 ### Intuition of API
 An API (Application Programming Interface) is like a factory or a math function. A factory takes specific inputs ($x$) and produces predictable outputs ($y$)—without requiring people to understand the internal workings of the factory.  
 
 Similarly, an API takes a request, processes it according to predefined rules, and returns a response. In our case, the API takes a user's search input and returns the most similar games.
+
+![fastapi-1](images/fastapi-1.png)
+![fastapi-2](images/fastapi-2.png)
 
 ### Intuition of Docker and Deploying on GCP
 When you write a program on your computer. Normally, it might not work on someone else's computer because their system could be different (different operating system, different libraries, etc.).  
@@ -46,7 +49,7 @@ We then deploy Docker on GCP to allow users to access our API publicly.
 
 Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py), but this is not recommended because it is hard to debug.  
 
-### Vector search and rerank with cross-encoder
+### Vector search and reranking with cross-encoder
 In [vector_search.py](code/vector_search.py), modify search criteria and run.  
 To add more search criteria:
 - Add filter conditions like `AND column_you_choose = $6` after the `results` query, and add corresponding parameters to `results`.
@@ -79,8 +82,9 @@ To add more search criteria:
 Reference: [Deploy a Dockerized FastAPI App to Google Cloud Platform](https://towardsdatascience.com/deploy-a-dockerized-fastapi-app-to-google-cloud-platform-24f72266c7ef?sk=11195a53615912077030568c8fe81b68) by Edward Krueger and Douglas Franklin.
 
 ## Limitations and potential extensions
-1. Limited by our computing power, the sentence transformer model `paraphrase-multilingual-MiniLM-L12-v2` we use is quite simple.
-2. Scrape [Steam](https://store.steampowered.com/search/?category1=998&ndl=1&ignore_preferences=1) periodically to update the database.
+1. Limited by our computing power, the sentence transformer models we use ( `paraphrase-multilingual-MiniLM-L12-v2` and `cross-encoder/ms-marco-MiniLM-L-6-v2`) are quite simple.
+2. Data cleaning can be more extensive and sophisticated.
+3. Scrape [Steam](https://store.steampowered.com/search/?category1=998&ndl=1&ignore_preferences=1) periodically to update the database.
 
 ## Notes
 1. When cleaning "Release Date", if a date is not in "Jan 1, 2000" format, set it to NaT/NaN. This includes "Apr 2019", "Apr-2019", "Coming soon", etc.
