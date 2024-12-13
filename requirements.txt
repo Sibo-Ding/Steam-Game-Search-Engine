@@ -13,3 +13,4 @@ fastapi
 uvicorn
 streamlit
 requests
+streamlit-kickoff-cli
