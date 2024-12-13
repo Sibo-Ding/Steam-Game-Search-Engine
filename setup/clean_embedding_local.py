@@ -1,4 +1,4 @@
-#========== Load environment ==========
+#%%========== Load environment ==========
 # Save steam_data.csv under "data" folder
 
 import os
@@ -10,20 +10,19 @@ os.chdir(current_directory)
 IN_PATH = "../data/steam_data.csv"
 OUT_PATH = "../data/steam_clean_no_header.csv"
 
-#====================
+#%%====================
 from tqdm import tqdm
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 
-def clean_embedding(IN_PATH):
-#========== Clean data ==========
-    tqdm.pandas()  # Progress bar
-
-    # Read csv + Drop NA Title
-    # Clean price: Replace "Free" with "0" + Remove "$" and "," + Convert to float
-    # Clean date: coerce: If a date is not in "Jan 1, 2000" format, set it to NaT/NaN
-    # Combine Title, Description, Tags, and Features to one column "search_text"
-    # Remane + Select columns
+def clean_data(IN_PATH):
+    """
+    Read csv + Drop NA Title
+    Clean price: Replace "Free" with "0" + Remove "$" and "," + Convert to float
+    Clean date: coerce: If a date is not in "Jan 1, 2000" format, set it to NaT/NaN
+    Combine Title, Description, Tags, and Features to one column "search_text"
+    Remane + Select columns
+    """
     df = (
         pd.read_csv(IN_PATH)
         .dropna(subset=["Title"])
@@ -66,7 +65,12 @@ def clean_embedding(IN_PATH):
         ]
     ]
 
-#========== Sentence transformer ==========
+    return df
+
+
+def vector_embedding(df):
+    tqdm.pandas()  # Progress bar
+
     # Initialize Sentence Transformer model
     model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
     # Other more computationally complex models
@@ -84,8 +88,14 @@ def clean_embedding(IN_PATH):
     return df
 
 
+def clean_embedding(IN_PATH):
+    df = clean_data(IN_PATH)
+    df = vector_embedding(df)
+    return df
+
+
 if __name__ == "__main__":
 
     df = clean_embedding(IN_PATH)
-#========== Write csv ==========
+#%%========== Write csv ==========
     df.to_csv(OUT_PATH, header=False, index=False)
