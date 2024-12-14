@@ -80,7 +80,7 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 2. Open Streamlit UI on a browser by visiting [http://localhost:8501](http://localhost:8501). (Equivalent URLs include [http://127.0.0.1:8501](http://127.0.0.1:8501) and [http://0.0.0.0:8501](http://0.0.0.0:8501), but `localhost` is the most robust.)
 3. Submit a request similar to [FastAPI](#fastapi) step 3.
 
-FastAPI and Streamlit can be combined by running [main.py](code/main.py)
+FastAPI and Streamlit can be combined by running [main.py](code/main.py).
 
 ### Docker
 1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect it to WSL.
