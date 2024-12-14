@@ -32,6 +32,7 @@ if st.button("Search"):
                 st.write(f"**{result['name']}**")
                 st.write(f"Description: {result['description']}")
                 st.write(f"Original Price: ${result['original_price']}")
+                st.write("---")
         else:
             st.error("Did not find any results. Adjust the query parameters.")
     else:
