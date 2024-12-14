@@ -91,10 +91,10 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 
 ### Deploy Docker on GCP
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
-2. Google Cloud Run only supports one port, so we deploy FastAPI only. Copy the contents in [Dockerfile-api-GCP](Dockerfile-api-GCP) to [Dockerfile](Dockerfile) and redo [Docker](#docker) step 2. You can use a new image name to distinguish from the local one.
+2. Google Cloud Run only supports one port, so we deploy FastAPI only. Copy the contents in [Dockerfile-fastapi-GCP](Dockerfile-fastapi-GCP) to [Dockerfile](Dockerfile) and redo [Docker](#docker) step 2. You can use a new image name to distinguish from the local one.
     - For M1/M2 Mac users, run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support arm64.
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
-4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=2Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
+4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=3Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
 5. Wait a few moments for the deployment to complete. Once successful, the command line will display the service URL.
 6. Similar to [FastAPI](#fastapi) step 2, take the sercive URL and add `/docs` after it.
 7. Same as [FastAPI](#fastapi) step 3.
