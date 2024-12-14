@@ -6,7 +6,7 @@ WORKDIR /app
 # Copy necessary files into the container
 COPY requirements.txt /app
 COPY .env /app
-COPY code /app
+COPY code /app/code
 
 # Install the dependencies
 RUN pip install -r requirements.txt
@@ -17,4 +17,4 @@ EXPOSE 8080
 EXPOSE 8501
 
 # Run Python script
-CMD ["python", "main.py"]
+CMD ["python", "code/main.py"]
