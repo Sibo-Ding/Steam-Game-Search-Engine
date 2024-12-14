@@ -80,8 +80,6 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 2. Open Streamlit UI on a browser by visiting [http://localhost:8501](http://localhost:8501). (Equivalent URLs include [http://127.0.0.1:8501](http://127.0.0.1:8501) and [http://0.0.0.0:8501](http://0.0.0.0:8501), but `localhost` is the most robust.)
 3. Submit a request similar to [FastAPI](#fastapi) step 3.
 
-[FastAPI](#fastapi) and [Streamlit](#streamlit) can be combined by running [main.py](code/main.py)
-
 ### Docker
 1. Install Docker Desktop for [Windows](https://docs.docker.com/docker-for-windows/install/), [MacOS](https://docs.docker.com/docker-for-mac/install/), or [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/). Windows users may need to connect it to WSL.
 2. Build a Docker image: In your terminal (or Docker Desktop terminal), change the working directory to this repo, run `docker build -t <your-image-name> .`. From now on, replace `<your-image-name>` with the image name you choose.
@@ -91,8 +89,11 @@ In [vector_search.py](code/vector_search.py), modify search criteria and run. To
 
 ### Deploy Docker on GCP
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
-2. Google Cloud Run only supports one port, so we deploy FastAPI only. Copy the contents in [Dockerfile-fastapi-GCP](Dockerfile-fastapi-GCP) to [Dockerfile](Dockerfile) and redo [Docker](#docker) step 2. You can use a new image name to distinguish from the local one.
-    - For M1/M2 Mac users, run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support arm64.
+2. Since Google Cloud Run only supports one port (default `8080`), we deploy FastAPI and Streamlit separately.
+    - FastAPI: Copy the contents in [Dockerfile-fastapi-GCP](Dockerfile-fastapi-GCP) to [Dockerfile](Dockerfile).
+    - Streamlit: Copy the contents in [Dockerfile-streamlit-GCP](Dockerfile-streamlit-GCP) to [Dockerfile](Dockerfile). In [streamlit_app.py](code/streamlit_app.py), change `8080` to `8000` in `API_URL`.
+        - Rationale behind: The default port of FastAPI is `8080`, and we change it to `8000` in [streamlit.sh](streamlit.sh). The default port of Streamlit is `8501`, and we change it to `8080` in [streamlit.sh](streamlit.sh) to match the default port of Google Cloud Run. 
+3. Redo [Docker](#docker) step 2. ARM64 users run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support ARM64. You can use a new image name to distinguish from the local one. 
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
 4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=3Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
 5. Wait a few moments for the deployment to complete. Once successful, the command line will display the service URL.
