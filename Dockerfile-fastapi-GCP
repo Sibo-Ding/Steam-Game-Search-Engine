@@ -6,7 +6,7 @@ WORKDIR /app
 # Copy necessary files into the container
 COPY requirements.txt /app
 COPY .env /app
-COPY code /app
+COPY code /app/code
 
 # Install the dependencies
 RUN pip install -r requirements.txt
@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Run Python script
-CMD ["python", "fastapi_app.py"]
+CMD ["python", "code/fastapi_app.py"]
