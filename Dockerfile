@@ -6,7 +6,7 @@ WORKDIR /app
 # Copy necessary files into the container
 COPY requirements.txt /app
 COPY .env /app
-COPY main_local.sh /app
+COPY scripts/main_local.sh /app
 COPY code /app/code
 
 # Install the dependencies
