@@ -56,7 +56,7 @@ We then deploy Docker on GCP to allow users to access our API publicly.
 3. Create a SQL table by running [create_table.py](setup/create_table.py).
 4. Clean data and use a sentence transformer to create a column with vector embeddings by running [clean_embedding_local.py](setup/clean_embedding_local.py) for about 1.5 hours on my computer (Microsoft Surface Laptop 2), output `data/steam_clean_no_header.csv`.
     - Loading `sentence_transformers` package locally requires `numpy.__version__` < 2 and `keras.__version__` < 3.
-    - Alternatively, run [clean_embedding_GCP_Vertex.ipynb](setup/clean_embedding_GCP_Vertex.ipynb) on GCP Vertex AI about 1.5 hours or [clean_embedding_Google_Drive.ipynb](setup/clean_embedding_Google_Drive.ipynb) on Google Drive for about 3.5 hours. Detailed instructions for loading data are in these files.
+    - Alternatively, run [clean_embedding_GCP_Vertex.ipynb](setup/clean_embedding_GCP_Vertex.ipynb) on GCP Vertex AI for about 1.5 hours or [clean_embedding_Google_Drive.ipynb](setup/clean_embedding_Google_Drive.ipynb) on Google Drive for about 3.5 hours. Detailed instructions for loading data are in these files.
 5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `steam` table using the "Import" option in GCP SQL instance's console.
 6. Create vector indexes by running [create_vector_indexes.py](setup/create_vector_indexes.py).
 
@@ -98,7 +98,7 @@ FastAPI and Streamlit can be combined by running [main.py](code/main.py)
 3. Redo [Docker](#docker) step 2. ARM64 users run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support ARM64. You can use a new image name to distinguish from the local one. 
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
 4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=3Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
-5. Wait a few moments for the deployment to complete. Once successful, the command line will display the service URL.
+5. Wait a few moments for the deployment to complete. Once successful, the command line will display a service URL.
 6. If you deploy FastAPI, similar to [FastAPI](#fastapi) step 2, take the sercive URL and add `/docs` after it. If you deploy Streamlit, similar to [Streamlit](#streamlit) step 2, visit the service URL.
 7. Same as [FastAPI](#fastapi) or [Streamlit](#streamlit) step 3.
 
