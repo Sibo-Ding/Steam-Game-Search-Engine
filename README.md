@@ -4,7 +4,7 @@
 With thousands of games on Steam, it is easy to get lost trying to find the right one. 
 Whether you are searching for a game to relax after a long day, dive into a new adventure, or challenge yourself with a competitive experience, our search engine helps you quickly find the perfect game. No more endless scrolling—just smooth, fast, and personalized game discovery!  
 
-Using [Google Cloud Platform (GCP)](https://cloud.google.com/) as our primary platform, we build a game search engine that finds games most similar to a user's search input. We utilize vector search in PostgreSQL and rerank the search results using a cross-encoder. We then make the search engine accessible through an API with a Streamlit interface and deploy them on public websites.
+Using [Google Cloud Platform (GCP)](https://cloud.google.com/) as our primary platform, we build a game search engine that finds games most similar to a user's search input. We utilize vector search in PostgreSQL and rerank the search results using a cross-encoder. We then make the search engine accessible through an API with a Streamlit interface and deploy it on a public website.
 
 ## Methods
 ### Intuition of vector search
@@ -15,9 +15,7 @@ First, you assign numerical values to the fruits: a lemon is 1, an orange is 2, 
 In our case, the fruits represent the games in our database, and the orange represents a search input. We use a [sentence transformer](https://sbert.net) (or use [LangChain](https://python.langchain.com/docs) if you like) to convert them into vectors (i.e. lists of numbers) and use [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity) to measure the similarities between these vectors. Finally, we find the games most similar to the search input.
 
 ### Intuition of reranking with cross-encoder
-After retrieving the initial search results, reranking use a more computationally expensive model to better rank them.  
-
-A [cross-encoder](https://www.sbert.net/examples/applications/cross-encoder/README.html) is a model used in the reranking process. Unlike an encoder-decoder model where the search input and initial search results are processed independently, a cross-encoder processes them **together** in a single step to directly evaluate how well they match.   
+After retrieving the initial search results, reranking use a more computationally expensive model such as a [cross-encoder](https://www.sbert.net/examples/applications/cross-encoder/README.html) to better rank them. Unlike an encoder-decoder model where the search input and initial search results are processed independently, a cross-encoder processes them **together** in a single step to directly evaluate how well they match.   
 
 Back to the grocery store example, instead of assigning values like "lemon = 1" and "orange = 2", you evaluate the match between this "lemon-orange" pair, considering how well a lemon fits with an orange in a more holistic way.
 
@@ -40,9 +38,9 @@ Streamlit is a Python library that simplifies building web applications by writi
 ### Intuition of Docker and deploying it on GCP
 When you write a program on your computer. Normally, it might not work on someone else's computer because their system could be different (different operating system, different libraries, etc.).  
 
-Docker creates "containers", holding your program and all its dependencies (everything it needs to run like libraries, configurations, etc.) in a consistent way, no matter where it runs. Whether on your computer, a server, or the cloud, the program will always run the same.  
+Docker creates "containers", holding your program and all its dependencies (everything it needs to run like libraries, configurations, etc.) in a consistent way, no matter where it runs. Whether on your computer, a server, or a cloud, the program will always run the same.  
 
-We then deploy Docker on GCP to allow users to access our API publicly.
+We then deploy Docker on GCP to allow users to access our API on a public website.
 
 ## Instructions to reproduce
 ### Datebase setup

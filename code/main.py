@@ -7,10 +7,10 @@ import streamlit.web.cli
 current_directory = os.path.dirname(os.path.abspath(__file__))
 os.chdir(current_directory)
 
-# Run the FastAPI backend
+# Run FastAPI backend
 subprocess.Popen(["python3", "fastapi_app.py"])
 
 time.sleep(15)  # Wait for FastAPI to start up
 
-# uns the Streamlit frontend
+# Run Streamlit frontend
 streamlit.web.cli.main(["run", "streamlit_app.py"])

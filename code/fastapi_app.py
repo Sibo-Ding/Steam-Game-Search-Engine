@@ -35,7 +35,7 @@ cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
 @app.post("/search/", response_model=list[SearchResult])
 async def search_games(request: SearchRequest):
     """
-    Handles the API request to search for similar games and rerank results.
+    Handle the API request to search for similar games and rerank results.
     """
 
     # Encode the query into a vector

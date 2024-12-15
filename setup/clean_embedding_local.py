@@ -69,16 +69,16 @@ def clean_data(IN_PATH):
 
 
 def vector_embedding(df):
+    "Add embedding column with progress bar"
     tqdm.pandas()  # Progress bar
 
-    # Initialize Sentence Transformer model
+    # Load sentence transformer model
     model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
     # Other more computationally complex models
     # model = SentenceTransformer("distiluse-base-multilingual-cased-v1")
     # model = SentenceTransformer("xlm-r-bert-base-nli-stsb-mean-tokens")
     # model = SentenceTransformer("LaBSE")
 
-    # Add embedding column with progress bar
     df["embedding"] = df["search_text"].progress_apply(
         lambda text: model.encode(text).tolist()
     )

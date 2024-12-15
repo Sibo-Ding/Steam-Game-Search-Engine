@@ -5,7 +5,7 @@
 from database import engine
 
 def create_vector_indexes(m, ef_construction, operator):
-    """Create vector indexes for faster similarity search"""
+    "Create vector indexes for faster similarity search"
     with engine.begin() as conn:
         conn.exec_driver_sql(
             f"""CREATE INDEX ON steam

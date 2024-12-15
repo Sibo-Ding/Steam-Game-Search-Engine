@@ -33,7 +33,7 @@ candidates = []  # A list storing search results
 
 async def vector_search():
     """
-    Finds similar games to users' query using `pgvector` cosine similarity search
+    Find similar games to users' query using `pgvector` cosine similarity search
     over all vector embeddings.
     """
     
@@ -96,8 +96,13 @@ query_description_pairs = [
     for candidate in candidates
 ]
 
-# Load the cross-encoder model
+# Load cross-encoder model
 cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+# Other more computationally complex models
+# cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-12-v2")
+# cross_encoder = CrossEncoder("cross-encoder/ms-marco-electra-base")
+# cross_encoder = CrossEncoder("cross-encoder/ms-marco-TinyBERT-L-6")
+# cross_encoder = CrossEncoder("cross-encoder/ms-marco-BERT-base")
 
 # Rerank results using the cross-encoder
 scores = cross_encoder.predict(query_description_pairs)
@@ -108,6 +113,6 @@ for i, score in enumerate(scores):
 reranked_results = sorted(candidates, key=lambda x: x["relevance_score"], reverse=True)
 
 # ====================
-# Show the results for similar products that matched the user query.
+# Show the results for similar games that matched the user query.
 matches = pd.DataFrame(reranked_results)
 print(matches)
