@@ -1,7 +1,7 @@
 # Steam Game Search Engine
 
 ## Introduction
-With thousands of games on Steam, it is easy to get lost trying to find the right one. 
+With thousands of games on [Steam](https://store.steampowered.com/search/?category1=998&ndl=1&ignore_preferences=1), it is easy to get lost trying to find the right one. 
 Whether you are searching for a game to relax after a long day, dive into a new adventure, or challenge yourself with a competitive experience, our search engine helps you quickly find the perfect game. No more endless scrolling—just smooth, fast, and personalized game discovery!  
 
 Using [Google Cloud Platform (GCP)](https://cloud.google.com/) as our primary platform, we develop a Steam game search engine that finds games most similar to a user's search input. We use a sentence transformer to generate embeddings for the search input and game descriptions. After that, we utilize vector search in PostgreSQL and rerank the search results using a cross-encoder. We then make the search engine accessible through FastAPI with a Streamlit interface. Finally, we containerize the application using Docker and deploy it on a public website.
@@ -45,8 +45,8 @@ We then deploy Docker on GCP to allow users to access our API on a public websit
 ## Instructions to reproduce
 ### Datebase setup
 1. Create a PostgreSQL database instance in GCP SQL.
-2. Create a database called `steam` in GCP SQL in the "Databases" tab.
-3. Create a `.env` file at the top of the repo saving database credentials, following the format in [demo.env](demo.env). You can use the default username `postgres` and the password you set. Your host can be found on the GCP SQL "Overview" tab. The default Postgres port is `5432`. Connect to the database `steam`.
+2. Create a database called `<your-database>` (replace with the name you choose, same in the next step and [Setup](#setup) step 5) in GCP SQL in the "Databases" tab.
+3. Create a `.env` file at the top of the repo saving database credentials, following the format in [demo.env](demo.env). You can use the default username `postgres` and the password you set. Your host can be found on the GCP SQL "Overview" tab. The default Postgres port is `5432`. Connect to the database `<your-database>`.
 
 ### Setup
 1. Install packages in [requirements.txt](requirements.txt).
@@ -55,7 +55,7 @@ We then deploy Docker on GCP to allow users to access our API on a public websit
 4. Clean data and use a sentence transformer to create a column with vector embeddings by running [clean_embedding_local.py](setup/clean_embedding_local.py) for about 1.5 hours on my computer (Microsoft Surface Laptop 2), output `data/steam_clean_no_header.csv`.
     - Loading `sentence_transformers` package locally requires `numpy.__version__` < 2 and `keras.__version__` < 3.
     - Alternatively, run [clean_embedding_GCP_Vertex.ipynb](setup/clean_embedding_GCP_Vertex.ipynb) on GCP Vertex AI for about 1.5 hours or [clean_embedding_Google_Drive.ipynb](setup/clean_embedding_Google_Drive.ipynb) on Google Drive for about 3.5 hours. Detailed instructions for loading data are in these files.
-5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `steam` table using the "Import" option in GCP SQL instance's console.
+5. Upload `steam_clean_no_header.csv` into GCP bucket. Load it into `<your-database>` and `steam` table using the "Import" option in GCP SQL instance's console.
 6. Create vector indexes by running [create_vector_indexes.py](setup/create_vector_indexes.py).
 
 Steps 3 to 6 can be combined and automated by running [combined_setup.py](setup/combined_setup.py), but this is not recommended because it is hard to debug.  
@@ -92,13 +92,13 @@ FastAPI and Streamlit can be combined by running [main.py](code/main.py).
 2. Since Google Cloud Run only supports one port, deploy FastAPI and Streamlit separately:
     - FastAPI: Copy the contents in [Dockerfile-fastapi-GCP](dockerfiles/Dockerfile-fastapi-GCP) to [Dockerfile](Dockerfile).
     - Streamlit: Copy the contents in [Dockerfile-streamlit-GCP](dockerfiles/Dockerfile-streamlit-GCP) to [Dockerfile](Dockerfile).
-        - Rationale behind: The Google Cloud Run default port `8080` is occupied by the FastAPI default port, so move the FastAPI port to `8000` and let Streamlit listen to it. Then change the Streamlit port from the default `8501` to `8080`, to match the Google Cloud Run default port. These changes are made by [streamlit_GCP.sh](streamlit_GCP.sh) and [streamlit_app_GCP.py](code/streamlit_app_GCP.py).
-3. Redo [Docker](#docker) step 2. ARM64 users run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support ARM64. You can use a new image name to distinguish from the local one. 
-3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
-4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=3Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
-5. Wait a few moments for the deployment to complete. Once successful, the command line will display a service URL.
-6. If you deploy FastAPI, similar to [FastAPI](#fastapi) step 2, take the sercive URL and add `/docs` after it. If you deploy Streamlit, similar to [Streamlit](#streamlit) step 2, visit the service URL.
-7. Same as [FastAPI](#fastapi) or [Streamlit](#streamlit) step 3.
+        - Rationale behind: The Google Cloud Run default port `8080` is occupied by the FastAPI default port, so move the FastAPI port to an empty port `8000` (or any other port you like, just be consistent) and let Streamlit listen to it. Then change the Streamlit port from the default `8501` to `8080`, to match the Google Cloud Run default port. These changes are made by [streamlit_GCP.sh](streamlit_GCP.sh) and [streamlit_app_GCP.py](code/streamlit_app_GCP.py).
+3. Redo [Docker](#docker) step 2. ARM64 users run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support ARM64. You can choose a new image name to distinguish from the local one. 
+4. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
+5. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=3Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
+6. Wait a few moments for the deployment to complete. Once successful, the command line will display a service URL.
+7. If you deploy FastAPI, similar to [FastAPI](#fastapi) step 2, take the sercive URL and add `/docs` after it. If you deploy Streamlit, similar to [Streamlit](#streamlit) step 2, visit the service URL.
+8. Same as [FastAPI](#fastapi) or [Streamlit](#streamlit) step 3.
 
 Reference: [Deploy a Dockerized FastAPI App to Google Cloud Platform](https://towardsdatascience.com/deploy-a-dockerized-fastapi-app-to-google-cloud-platform-24f72266c7ef?sk=11195a53615912077030568c8fe81b68) by Edward Krueger and Douglas Franklin.
 
