@@ -91,10 +91,10 @@ FastAPI and Streamlit can be combined by running [main.py](code/main.py).
 
 ### Deploy Docker on GCP
 1. Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) and authenticate (follow the instructions on the website). Authenticate Docker by running `gcloud auth configure-docker` in your terminal.
-2. Since Google Cloud Run only supports one port (default `8080`), deploy FastAPI and Streamlit separately.
+2. Since Google Cloud Run only supports one port, deploy FastAPI and Streamlit separately:
     - FastAPI: Copy the contents in [Dockerfile-fastapi-GCP](dockerfiles/Dockerfile-fastapi-GCP) to [Dockerfile](Dockerfile).
-    - Streamlit: Copy the contents in [Dockerfile-streamlit-GCP](dockerfiles/Dockerfile-streamlit-GCP) to [Dockerfile](Dockerfile). In [streamlit_app.py](code/streamlit_app.py), change `8080` to `8000` in `API_URL`.
-        - Rationale behind: The default port of FastAPI is `8080`, and we change it to `8000` in [streamlit_GCP.sh](streamlit_GCP.sh). The default port of Streamlit is `8501`, and we change it to `8080` in [streamlit_GCP.sh](streamlit_GCP.sh) to match the default port of Google Cloud Run. 
+    - Streamlit: Copy the contents in [Dockerfile-streamlit-GCP](dockerfiles/Dockerfile-streamlit-GCP) to [Dockerfile](Dockerfile).
+        - Rationale behind: The Google Cloud Run default port `8080` is occupied by the FastAPI default port, so we move the FastAPI port to `8000` and let Streamlit listen to it. Then we change the Streamlit port from the default `8501` to `8080`, to match the Google Cloud Run default port. These changes are made by [streamlit_GCP.sh](streamlit_GCP.sh) and [streamlit_app_GCP.py](code/streamlit_app_GCP.py).
 3. Redo [Docker](#docker) step 2. ARM64 users run `docker buildx build --platform linux/amd64 -t <your-image-name> .` instead because Google Cloud Run does not support ARM64. You can use a new image name to distinguish from the local one. 
 3. Push the Docker image to Google Cloud Registry by running `docker tag <your-image-name> gcr.io/<your-project-id>/<your-image-name>` and `docker push gcr.io/<your-project-id>/<your-image-name>`. From now on, replace `<your-project-id>` with your GCP project ID.
 4. Deploy the image on Google Cloud Run by running `gcloud run deploy <your-service-name> --image gcr.io/<your-project-id>/<your-image-name> --platform managed --memory=3Gi`. Replace `<your-service-name>` with the service name you choose. You will be prompted for region and to **allow unauthenticated invocations**: respond `y` if you want public access, and `n` to limit IP access to resources in the same google project.
