@@ -2,7 +2,7 @@
 # https://cloud.google.com/blog/products/databases/using-pgvector-llms-and-langchain-with-google-cloud-databases
 # https://colab.research.google.com/github/GoogleCloudPlatform/python-docs-samples/blob/main/cloud-sql/postgres/pgvector/notebooks/pgvector_gen_ai_demo.ipynb#scrollTo=_zRBR9YJoENp
 
-#========== Input ==========
+#%%========== Input ==========
 # Enter a short description of the game to search for within a specified price range:
 search_input = "A game similar to Warhammer."  # type: string
 min_price = 0  # type: integer
@@ -14,13 +14,13 @@ num_matches = 10  # type: integer
 # Quick input validations.
 assert type(search_input) == str, "⚠️ Please input a valid input search text"
 
-#========== Encode the query into a vector ==========
+#%%========== Encode the query into a vector ==========
 from sentence_transformers import SentenceTransformer, CrossEncoder
 
 embeddings_service = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 qe = embeddings_service.encode(search_input).tolist()  # qe = Query Embedding
 
-#========== Vector search ==========
+#%%========== Vector search ==========
 from pgvector.asyncpg import register_vector
 import asyncio
 import asyncpg
@@ -89,7 +89,7 @@ async def vector_search():
 # Run the SQL commands now.
 asyncio.run(vector_search())
 
-#========== Rerank results with a cross-encoder ==========
+#%%========== Rerank results with a cross-encoder ==========
 # Prepare query-result pairs for reranking
 query_description_pairs = [
     (search_input, candidate["description"])
@@ -112,7 +112,7 @@ for i, score in enumerate(scores):
 # Sort candidates by relevance score in descending order
 reranked_results = sorted(candidates, key=lambda x: x["relevance_score"], reverse=True)
 
-# ====================
+#%%====================
 # Show the results for similar games that matched the user query.
 matches = pd.DataFrame(reranked_results)
 print(matches)
